@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from main.forms import *
 from task.views import *
 from med3Dmodel.tasks import *
-
+import urllib2
+import urllib
 # Create your views here.
 
 
@@ -194,9 +195,40 @@ def deletemodel(request,id):
 		else:
 			return HttpResponse('File not found')
 
-def generate(request,id):
+import urllib2
+import threading
 
-	return render(request,'main/generate.html')
+class MyHandler(urllib2.HTTPHandler):
+	def http_response(self, req, response):
+		print "url: %s" % (response.geturl(),)
+		print "info: %s" % (response.info(),)
+		for l in response:
+			print l + " de puta madre"
+		return response
+
+
+class SendWorker():
+	def __init__(self):
+		self.worker_url='http://127.0.0.1:9000/worker'
+		self.urlcall= urllib2.build_opener(MyHandler())
+
+	def run(self,rest_query):
+		t = threading.Thread(target=self.urlcall.open, args=(self.worker_url+rest_query,))
+		t.start()
+
+
+def generate(request,id):
+	#req = urllib2.Request('http://127.0.0.1:9000/worker/worker')
+	#response = urllib2.urlopen(req)
+	#html = response.read()
+	#print html
+	w = SendWorker()
+	w.run('/worker')
+
+	print "I'm asynchronous!"
+	# do something
+	  # best practice to close the file
+	return render(request,'main/files.html')
 
 def browser(request,id):
 	return render(request,'main/browser.html')
