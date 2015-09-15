@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+
+{% endblock %}
+
+{% block content %}
+
+		<!-- Header -->
+	
+
+
+		<section id="one" class="wrapper style1">
+				<header class="major">
+					<h2>{{user.username}}'s account</h2>
+					
+				</header>
+				<div class="container">
+					<div class="row">
+					
+						<div class="4u">
+							<section class="special box">
+							<a href="/main/upload" class="button big special">Upload</a>
+								<h4>Upload your medical images or 3d models</h4>
+								 
+							</section>
+						</div>
+						<div class="4u">
+							<section class="special box">
+								<a href="/main/files/" class="button big special">Browser</a>
+								<h4>Browse through your files</h4>
+								 
+							</section>
+						</div>
+
+                        <div class="4u">
+							<section class="special box">
+								<a href="/main/comp/" class="button big special">Compare CT</a>
+								<h4>View two different CTs to compare features</h4>
+
+							</section>
+						</div>
+					
+						<div class="4u">
+							<section class="special box">
+							<a href="/main/order" class="button big special">Order</a>
+								<h4>Order a 3D printed model</h4>
+								 
+							</section>
+						</div>
+					</div>
+				</div>
+			</section>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+
+{% endblock %}
+
+{% block content %}
+	
+		<!-- Header -->
+        <style>
+            html, body {
+          background-color: rgb(0, 0, 0);
+                margin: 5px;
+          padding: 10px;
+          height: 100%;
+          overflow: hidden !important;
+        }
+            .container {
+                height: 85%;
+            width: 90%;
+
+
+    </style>
+
+    <div class="row">
+        <div class="col-xs-6">
+        <form class="form-horizontal" action="/main/draw/" method="POST" enctype="multipart/form-data" id="comp-form" >{% csrf_token %}
+        <div class="form-group">
+                                        <div class="btn-group" role="group">
+                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        CT 1 <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                          {% if lista %}
+                                              {% for imgcontainer in lista %}
+                                        <li>{{ imgcontainer.name }}</li>
+                                              {% endfor %}
+                                            {% else %}
+                                                <p>No medical images</p>
+                                            {% endif %}
+                                      </ul>
+                                    </div>
+    </div>
+        <div class="form-group">
+            <input type="submit" value="Load">
+            </div>
+</form>
+
+
+
+
+
+
+        </div>
+
+        <div class="col-xs-6">
+
+                                        <div class="btn-group" role="group">
+                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        CT 2 <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                          	{% if lista %}
+								{% for imgcontainer in lista %}
+                                        <li>{{ imgcontainer.name }}</li>
+                                          {% endfor %}
+				{% else %}
+					<p>No medical images</p>
+				{% endif %}
+                                      </ul>
+                                    </div>
+
+        </div>
+
+    </div>
+{#<div class="row" style="background-color: #000; width: 100%; height: 100%; margin-bottom: 2px; margin-top: 20px; float:left  ">#}
+{#<div id="guia"  style="background-color: #000; width: 20%; height: 50%; margin-bottom: 2px; margin-top: 20px; float:left  ">#}
+{##}
+{#</div>#}
+{#<div  id="3da"#}
+{#  style="background-color: #000; width: 50%; height: 100%; margin-bottom: 2px;  ">{% include "main/compviewer.html" %}</div>#}
+{#<div id="guib"  style="background-color: #000; width: 20%; height: 50%; margin-bottom: 2px; margin-top: 20px; float:left  "></div>#}
+{#<div  id="3db"#}
+{#  style="background-color: #000; width: 50%; height: 100%; margin-bottom: 2px;  ">{% include "main/compviewer.html" %}</div>#}
+{##}
+{##}
+{#</div>#}
+
+
+<div  class="row" style="height: 100%;margin-bottom: 60px">
+<div class="col-xs-6" id="r" style="height: 90%">
+    {% include "main/compviewer.html" %}
+</div>
+<div class="col-xs-6" style="height: 90%">
+    {% include "main/compviewer.html" %}
+</div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+{#<script type="text/javascript">#}
+{##}
+{#     $("comp-form").submit(function(event){#}
+{#    event.preventDefault();#}
+{#    console.log("form submitted!");  // sanity check#}
+{#    hand();#}
+{#});#}
+{##}
+{#     function hand() {#}
+{#         $.ajax({#}
+{#             url:"main/files",#}
+{#             type:"POST",#}
+{#             data:{hola:"hola"},#}
+{#             console.log(data),#}
+{#         });#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#     };#}
+{##}
+{# </script>#}

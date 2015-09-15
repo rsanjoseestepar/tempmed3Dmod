@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+
+{% block content %}
+
+
+
+			<section id="main" class="wrapper style1">
+				<header class="major">
+					<h3>User: {{user.username}}</h3>
+					
+				</header>
+			
+				<div class="container">
+				
+				
+					
+					<hr class="major" />
+					<div class="row">
+				
+						<div class="8u">
+					
+				
+							<section class="special box">
+								
+								
+								<h3>Username:{{request.user.get_full_name}}</h3>
+								<ul class="actions">
+									<li>Email: {{user.email}}</li>
+									<li>First Name: {{user.first_name}}</li>
+									<li>Last Name:{{user.last_name}}</li>
+									<li>Password: {{user.password}}</li>
+									<li>Date joined: {{user.date_joined}}</li>
+								</ul>
+							
+				
+							
+							</section>
+
+
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}

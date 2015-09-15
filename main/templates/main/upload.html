@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+
+{% endblock %}
+
+{% block content %}
+
+
+
+		<!-- Header -->
+
+    
+
+{##}
+{#    <div class="row">#}
+{#        <h1>Type of image to upload</h1>#}
+{#        <label class="radio-inline">#}
+{#          <input name="" id="radio1" value="option1" type="radio"> Medical Image (NRRD, DICOM, NHDR)#}
+{#        </label>#}
+{#        <label class="radio-inline">#}
+{#          <input name="radioGroup" id="radio2" value="option2" checked="checked" type="radio"> 3D Model (STL, G-CODE)#}
+{#        </label>#}
+{##}
+{#    </div>#}
+
+
+
+    
+    
+
+<div class="row">
+{#<div class="col-sm-6">#}
+{##}
+{#  <h5>Medical Image</h5>#}
+{#<form class="form-horizontal" action="/main/upload_medimg/" method="post" enctype="multipart/form-data">{% csrf_token %}#}
+{#<table>#}
+{#  <tr>#}
+{##}
+{#    <td><input id="id_file" type="file" class="" name="imgcontainer" ></td>#}
+{##}
+{##}
+{#    <tr>#}
+{#    <td><input type="submit" value="Upload"></td>#}
+{#    </tr>#}
+{#</table>#}
+{#</form>#}
+{##}
+{#</div>#}
+
+
+
+{# <div class="col-xs-6">#}
+{#    <h5>Medical Image</h5>#}
+{#    <form class="form-horizontal" action="/main/upload_medimg/" method="post" enctype="multipart/form-data">{% csrf_token %}#}
+{#        <div class="form-group">#}
+{#        <input type="file" class="form-inline" name="imgcontainer" >#}
+{#    </div>#}
+{#        <div class="form-group">#}
+{#            <input type="submit" value="Upload">#}
+{#            </div>#}
+{#</form>#}
+{#</div>#}
+{#<div class="col-sm-6">#}
+{##}
+{##}
+{#<form class="form-horizontal" action="/main/upload_model/" method="post" enctype="multipart/form-data">{% csrf_token %}#}
+{#<table>#}
+{#  <tr>#}
+{#    <td>Model</td>#}
+{#    <td><input id="id_file" type="file" class="" name="model" ></td>#}
+{##}
+{#    <td><label for="name">File name:</label><input id="name" type="text" class="" name="name"></td>#}
+{#    <tr>#}
+{#    <td><input type="submit" value="Upload"></td>#}
+{#    </tr>#}
+{#</table>#}
+{#</form>#}
+{##}
+{#</div>#}
+
+
+<div class="col-xs-6">
+    <h5>Upload form</h5>
+    <form class="form-horizontal" action="/main/upload_form/" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="form-group">
+    <div class="radio">
+        <label><input type="radio" name="imgOptions" id="model" value="model">Model (STL or G-Code)
+        </label>
+    </div>
+    <div class="radio">
+        <label><input type="radio" name="imgOptions" id="medimg" value="medimg"> Medical Image (NRRD or DICOM)
+        </label>
+    </div>
+            </div>
+
+        <div class="form-group">
+        <label for="name">File Name:</label>
+        <input type="text" class="form-control" name="name" placeholder="Put a name to your file">
+    </div>
+    <div class="form-group">
+        <input type="file" class="form-inline" name="file" >
+    </div>
+        <div class="form-group">
+            <input type="submit" value="Upload">
+            </div>
+</form>
+</div>
+
+
+
+
+
+
+</div>
+
+
+{% endblock %}

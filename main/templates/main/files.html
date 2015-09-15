@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+
+{% endblock %}
+
+{% block content %}
+	
+		<!-- Header -->
+
+
+
+
+
+
+
+
+{#			<section id="main" class="wrapper style1">#}
+				<header class="major">
+					<h3>User: {{user.username}}</h3>
+					
+				</header>
+			
+
+				
+				
+					
+					<hr class="major" />
+					<div class="row">
+				
+						<div class="col-sm-6">
+						<h3>Medical Images</h3>
+				
+{#							<section class="special box">#}
+								{% if lista %}
+								{% for imgcontainer in lista %}
+								
+								<h4>File name: {{imgcontainer.name}}</h4>
+                                    <h5>Path: {{imgcontainer.file}}</h5>
+{#								<ul class="list-group">#}
+{#									<li class="list-group-item"><a href="/main/{{imgcontainer.id}}" >View</a></li>#}
+{#									<li class="list-group-item"><a href="/main/generate{{imgcontainer.id}}" >Generate models</a></li>#}
+{#									<li class="list-group-item"><a href="/main/browser{{imgcontainer.id}}" class="btn">Browse Models</a></li>#}
+{#									<li class="list-group-item"><a href="/main/{{imgcontainer.file}}" class="btn">Download</a></li>#}
+{#									<li class="list-group-item"><a href="/main/delete{{imgcontainer.id}}" class="btn">Delete</a></li>#}
+{#                                    <li class="list-group-item"><a href="/main/converter{{imgcontainer.id}}" class="btn">Convert</a></li>#}
+{#								</ul>#}
+
+
+
+                                    <div class="btn-group" role="group" aria-label="...">
+                                    <button  type="button" class="btn btn-default" ><a href="/main/{{imgcontainer.id}}" >View</a></button>
+                                        <button  type="button" class="btn btn-default" ><a href="/main/{{imgcontainer.file}}">Download</a></button>
+                                        <div class="btn-group" role="group">
+                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Actions <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                        <li><a href="/main/generate{{imgcontainer.id}}">Generate models</a></li>
+                                        <li><a href="/main/browser{{imgcontainer.id}}">Browse models</a></li>
+                                        <li><a href="/main/converter{{imgcontainer.id}}">Convert</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/main/delete{{imgcontainer.id}}">Delete</a></li>
+                                      </ul>
+                                    </div>
+                                    </div>
+								{% endfor %}
+				{% else %}
+					<p>No medical images</p>
+				{% endif %}
+							
+{#							</section>#}
+						
+				
+				
+					
+					</div>
+					
+					
+				
+						<div class="col-sm-6">
+						<h3>Models</h3>
+				
+{#							<section class="special box">#}
+								{% if lista2%}
+								{% for model in lista2 %}
+								<h4>File name: {{model.name}}</h4>
+                                    <h5>Path: {{model.model_file}}</h5>
+{#								<ul class="actions">#}
+{#									<li><a href="/main/vm{{model.id}}" class="button alt">View 3d Render</a></li>#}
+{#									<li><a href="{{ model.model_file.url }}" class="button alt">Download</a></li>#}
+{#									<li><a href="/main/converter{{model.model_file}}" class="button alt">Convert to G-Code</a></li>#}
+{#									<li><a href="/main/delete{{model.id}}" class="button alt">Delete</a></li>#}
+{#								</ul>#}
+
+
+
+                                    <div class="btn-group" role="group" aria-label="...">
+                                    <button  type="button" class="btn btn-default "><a href="/main/vm{{model.id}}" >View</a></button>
+                                        <button  type="button" class="btn btn-default"><a href="{{ model.model_file.url }}" >Download</a></button>
+                                        <div class="btn-group" role="group">
+                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Actions <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
+
+                                        <li><a href="/main/converter{{model.model_file}}">Convert</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/main/deletemodel{{model.id}}">Delete</a></li>
+                                      </ul>
+                                    </div>
+                                    </div>
+								{% endfor %}
+				{% else %}
+					<p>No models</p>
+				{% endif %}
+							
+{#							</section>#}
+						
+				
+				</div>
+					</div>
+
+			
+{#			</section>#}
+			
+{% endblock %}
