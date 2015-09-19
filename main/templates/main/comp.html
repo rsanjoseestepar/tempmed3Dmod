@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static from staticfiles %}
 {% block title %}
 
 
@@ -10,7 +10,7 @@
 		<!-- Header -->
         <style>
             html, body {
-          background-color: rgb(0, 0, 0);
+          background-color: rgb(255, 255, 255);
                 margin: 5px;
           padding: 10px;
           height: 100%;
@@ -18,59 +18,81 @@
         }
             .container {
                 height: 85%;
-            width: 90%;
+            width: 100%;
 
 
     </style>
 
     <div class="row">
         <div class="col-xs-6">
-        <form class="form-horizontal" action="/main/draw/" method="POST" enctype="multipart/form-data" id="comp-form" >{% csrf_token %}
-        <div class="form-group">
+
+
                                         <div class="btn-group" role="group">
-                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        CT 1 <span class="caret"></span>
-                                      </button>
-                                      <ul class="dropdown-menu">
-                                          {% if lista %}
-                                              {% for imgcontainer in lista %}
-                                        <li>{{ imgcontainer.name }}</li>
-                                              {% endfor %}
-                                            {% else %}
-                                                <p>No medical images</p>
-                                            {% endif %}
-                                      </ul>
+{#                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                        Donor model <span class="caret"></span>#}
+{#                                      </button>#}
+{#                                      <ul class="dropdown-menu">#}
+{#                                          {% if lista2 %}#}
+{#                                              {% for model in lista2 %}#}
+{#                                        <li>{{ model.name }}</li>#}
+{#                                              {% endfor %}#}
+{#                                            {% else %}#}
+{#                                                <p>No models</p>#}
+{#                                            {% endif %}#}
+{#                                      </ul>#}
+                                            <select id="donormodel" name="donormodel"  onchange="onChange()">
+                                            <option selected="true" style="display:none;">Select donor</option>
+                                                {% if lista2 %}
+                                                {% for model in lista2 %}
+                                             <option id='{{ model.id }}' value={{ model.model_file.url }}>{{ model.name }}</option>
+                                                {% endfor %}
+                                               {% else %}
+                                               <p>No models</p>
+                                                {% endif %}
+                                            </select>
                                     </div>
-    </div>
-        <div class="form-group">
-            <input type="submit" value="Load">
-            </div>
-</form>
-
-
-
-
-
-
+    <button onclick="window.myfunction()">Magic Mode ON</button>
+            <button onclick="window.mynofunction()">Magic Mode OFF</button>
+        <button onclick="window.norender()">Clear</button>
         </div>
+
+
+
+
+
+
+
+
+
 
         <div class="col-xs-6">
 
                                         <div class="btn-group" role="group">
-                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        CT 2 <span class="caret"></span>
-                                      </button>
-                                      <ul class="dropdown-menu">
-                                          	{% if lista %}
-								{% for imgcontainer in lista %}
-                                        <li>{{ imgcontainer.name }}</li>
-                                          {% endfor %}
-				{% else %}
-					<p>No medical images</p>
-				{% endif %}
-                                      </ul>
+{#                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                        Recipient model <span class="caret"></span>#}
+{#                                      </button>#}
+{#                                      <ul class="dropdown-menu">#}
+{#                                          	{% if lista2 %}#}
+{#								{% for model in lista2 %}#}
+{#                                        <li>{{ model.name }}</li>#}
+{#                                          {% endfor %}#}
+{#				{% else %}#}
+{#					<p>No models</p>#}
+{#				{% endif %}#}
+{#                                      </ul>#}
+                                             <select id="recipientmodel" name="recipientmodel"  onchange="onChange()">
+                                            <option selected="true" style="display:none;">Select recipient</option>
+                                                {% if lista2 %}
+                                                {% for model in lista2 %}
+                                             <option id='{{ model.id }}' value="{{ model.model_file.url}}">{{ model.name }}</option>
+                                                {% endfor %}
+                                               {% else %}
+                                               <p>No models</p>
+                                                {% endif %}
+                                            </select>
                                     </div>
-
+     <button onclick="window.myfunction2()">Magic Mode ON</button>
+        <button onclick="window.mynofunction2()">Magic Mode OFF</button>
         </div>
 
     </div>
@@ -89,17 +111,254 @@
 
 
 <div  class="row" style="height: 100%;margin-bottom: 60px">
-<div class="col-xs-6" id="r" style="height: 90%">
-    {% include "main/compviewer.html" %}
+<div class="col-xs-6" id="r" style="height: 100%">
+
+
+        <div  id="r4" style="background-color: #99CCFF; width: 99%; height: 60%; margin-bottom: 2px;  "></div>
+    <div id="r1" style=" background-color: #D7D7D7; width: 33%; height: 40%; float: left;border-right: 2px solid white;"></div>
+<div id="r2" style="background-color: #D7D7D7; width: 33%; height: 40%; float: left;border-right: 2px solid white;"></div>
+<div id="r3" style=" background-color: #D7D7D7; width: 33%; height: 40%; float: left;"></div>
 </div>
-<div class="col-xs-6" style="height: 90%">
-    {% include "main/compviewer.html" %}
+
+    <div class="col-xs-6" style="height: 100%">
+
+             <div  id="r8" style="background-color: #D7D7D7; width: 99%; height: 60%; margin-bottom: 2px;  "></div>
+    <div id="r5" style=" background-color: #D7D7D7; width: 33%; height: 40%; float: left;border-right: 2px solid white;"></div>
+<div id="r6" style="background-color: #D7D7D7; width: 33%; height: 40%; float: left;border-right: 2px solid white;"></div>
+<div id="r7" style=" background-color: #D7D7D7; width: 33%; height: 40%; float: left;"></div>
 </div>
 </div>
 
 
 
 
+
+
+
+{#     <script type="text/javascript" src="http://get.goXTK.com/xtk.js"></script>#}
+{#    <script type="text/javascript" src="http://get.goxtk.com/xtk_edge.js"></script>#}
+
+
+
+{#<script type="text/javascript" src="{% static "js/xtk.js"%}"></script>#}
+<script type="text/javascript" src="http://get.goXTK.com/xtk.js"></script>
+<script>
+
+
+
+
+    function ModelViewer(container) {
+          this.r1 = new X.renderer3D();
+          this.r1.container = container;
+          this.r1.init();
+          //this.r1.camera.position = [0, 0, -500];
+        //this.r1.camera.up = [0, 1, 0];
+    }
+
+    function FourViewsCoordinatedViewer(container_array) {
+
+        this.container_labels = container_array;
+        console.log(this.container_labels.length);
+        this.v = [new ModelViewer(container_array[0]),new ModelViewer(container_array[1]),new ModelViewer(container_array[2]),new ModelViewer(container_array[3])];
+        //this.v1 = new ModelViewer(container_array[0]);
+        //this.v2 = new ModelViewer(container_array[1]);
+        //this.v3 = new ModelViewer(container_arrary[2]);
+        //this.v4 = new ModelViewer(container_array[3]);
+
+        //Set up cameras in the cordinatedviewer
+        this.v[0].r1.camera.position = [0, 0, -500];
+        this.v[0].r1.camera.up = [0, 1, 0];
+        this.v[1].r1.camera.position = [500, 0, 0];
+        this.v[1].r1.camera.up = [0, 1, 0];
+        this.v[2].r1.camera.position = [0, 500, 0];
+        this.v[2].r1.camera.up = [0, 0, 1];
+        this.v[3].r1.camera.position = [0, 500, 0];
+        this.v[3].r1.camera.up = [0, 0, 1];
+
+        this.add_mesh_secondary_viewers = function(mesh_object) {
+           for (i=1; i< this.container_labels.length; i++) {
+
+                console.log('Adding mesh');
+                this.v[i].r1.add(mesh_object);
+           }
+        };
+
+        this.render_secondary_viewers = function() {
+           for (i=1; i< this.container_labels.length; i++) {
+                this.v[i].r1.render();
+           }
+        };
+
+        };
+
+
+
+
+
+
+  var mesh = new X.mesh();
+    var mesh2 = new X.mesh();
+
+    window.onload = function() {
+
+
+        containers_labels = ['r1','r2','r3', 'r4'];
+        container_labels2 = ['r5','r6','r7','r8'];
+
+   var FV = new FourViewsCoordinatedViewer(containers_labels);
+{#    var FV2 = new FourViewsCoordinatedViewer(container_labels2);#}
+
+
+
+
+
+                                var selectElement = document.getElementById("donormodel");
+                                selectElement.onchange=function(){
+
+                                // FV = new FourViewsCoordinatedViewer(containers_labels);
+                                    FV.v[0].r1.resetViewAndRender();
+                                    var val = selectElement.value;
+
+
+                                    mesh.file = "/static/"+val;
+                                    console.log(mesh.file);
+
+                                FV.v[0].r1.add(mesh);
+                                      FV.v[0].r1.onShowtime = function() {
+
+                                    // since the mesh was loaded, we add it now to the other renderers
+                                    // this way, the .VTK file is loaded only once
+
+                                    FV.add_mesh_secondary_viewers(mesh);
+
+                                      FV.v[2].r1.onRender = function() {
+                                                FV.v[2].r1.camera.rotate([2,0]);
+                                      }
+
+                                    // trigger rendering
+                                    FV.render_secondary_viewers();
+
+                                  };
+                                    FV.v[0].r1.render();
+                                    FV.render_secondary_viewers();
+
+                                };
+
+
+
+
+
+
+
+                                var selectElement2 = document.getElementById("recipientmodel");
+                                selectElement2.onchange=function(){
+
+                                 var FV2 = new FourViewsCoordinatedViewer(container_labels2);
+
+                                    var val2 = selectElement2.value;
+
+
+                                    mesh2.file = "/static/"+val2;
+
+                                        FV2.v[0].r1.add(mesh2);
+                                      FV2.v[0].r1.onShowtime = function() {
+
+                                    // since the mesh was loaded, we add it now to the other renderers
+                                    // this way, the .VTK file is loaded only once
+
+                                    FV2.add_mesh_secondary_viewers(mesh2);
+
+                                      FV2.v[2].r1.onRender = function() {
+                                                FV2.v[2].r1.camera.rotate([2,0]);
+                                      }
+
+                                    // trigger rendering
+                                    FV2.render_secondary_viewers();
+
+                                  };
+                                            FV2.v[0].r1.render();
+                                };
+
+
+
+
+
+
+
+      //  mesh.file = "{% static 'lung.stl' %}";
+       // mesh2.file = "{% static 'lung.stl' %}";
+
+  // .. but add it to only to the first renderer
+{#  FV.v[0].r1.add(mesh);#}
+{#    FV2.v[0].r1.add(mesh2);#}
+  // the onShowtime function gets executed, once the renderer r1 completely
+  // loaded the .VTK file
+{#  FV.v[0].r1.onShowtime = function() {#}
+{##}
+{#    // since the mesh was loaded, we add it now to the other renderers#}
+{#    // this way, the .VTK file is loaded only once#}
+{##}
+{#    FV.add_mesh_secondary_viewers(mesh);#}
+{##}
+{#      FV.v[2].r1.onRender = function() {#}
+{#                FV.v[2].r1.camera.rotate([2,0]);#}
+{#      }#}
+{##}
+{#    // trigger rendering#}
+{#    FV.render_secondary_viewers();#}
+{##}
+{#  };#}
+{##}
+{#        FV.v[0].r1.render();#}
+
+{##}
+{#  FV2.v[0].r1.onShowtime = function() {#}
+{##}
+{#    // since the mesh was loaded, we add it now to the other renderers#}
+{#    // this way, the .VTK file is loaded only once#}
+{##}
+{#    FV2.add_mesh_secondary_viewers(mesh2);#}
+{##}
+{#      FV2.v[2].r1.onRender = function() {#}
+{#                FV2.v[2].r1.camera.rotate([2,0]);#}
+{#      }#}
+{##}
+{#    // trigger rendering#}
+{#    FV2.render_secondary_viewers();#}
+{##}
+{#  };#}
+{##}
+{#        FV2.v[0].r1.render();#}
+{##}
+
+
+    };
+
+
+
+    function myfunction(){
+        mesh.magicmode = true;
+
+    };
+    function mynofunction(){
+        mesh.magicmode = false;
+    };
+
+  function myfunction2(){
+        mesh2.magicmode = true;
+    };
+    function mynofunction2(){
+            mesh2.magicmode = false;
+            };
+    function norender(){
+          FV.v[0].r1.resetViewAndRender();
+        FV.v[1].r1.resetViewAndRender();
+        FV.v[2].r1.resetViewAndRender();
+        FV.v[3].r1.resetViewAndRendar();
+
+    };
+
+</script>
 
 {% endblock %}
 

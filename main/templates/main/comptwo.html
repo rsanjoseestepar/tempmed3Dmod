@@ -1,10 +1,285 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block title %}
 
-</body>
-</html>
+
+{% endblock %}
+
+{% block content %}
+	
+		<!-- Header -->
+        <style>
+            html, body {
+          background-color: rgb(255, 255, 255);
+                margin: 5px;
+          padding: 10px;
+          height: 100%;
+          overflow: hidden !important;
+        }
+            .container {
+                height: 85%;
+            width: 100%;
+
+
+    </style>
+
+    <div class="row">
+        <div class="col-xs-6">
+
+
+                                        <div class="btn-group" role="group">
+{#                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                        Donor model <span class="caret"></span>#}
+{#                                      </button>#}
+{#                                      <ul class="dropdown-menu">#}
+{#                                          {% if lista2 %}#}
+{#                                              {% for model in lista2 %}#}
+{#                                        <li>{{ model.name }}</li>#}
+{#                                              {% endfor %}#}
+{#                                            {% else %}#}
+{#                                                <p>No models</p>#}
+{#                                            {% endif %}#}
+{#                                      </ul>#}
+                                            <select id="donormodel" name="donormodel"  onchange="onChange()">
+                                            <option selected="true" style="display:none;">Select donor</option>
+                                                {% if lista2 %}
+                                                {% for model in lista2 %}
+                                             <option id='{{ model.id }}' value={{ model.model_file.url }}>{{ model.name }}</option>
+                                                {% endfor %}
+                                               {% else %}
+                                               <p>No models</p>
+                                                {% endif %}
+                                            </select>
+                                    </div>
+    <button onclick="window.myfunction()">Magic Mode ON</button>
+            <button onclick="window.mynofunction()">Magic Mode OFF</button>
+            <button onclick="window.rot()">Rotation ON</button>
+          <button onclick="window.norot()">Rotation OFF</button>
+{#        <button onclick="window.norender()">Clear</button>#}
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <div class="col-xs-6">
+
+                                        <div class="btn-group" role="group">
+{#                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                        Recipient model <span class="caret"></span>#}
+{#                                      </button>#}
+{#                                      <ul class="dropdown-menu">#}
+{#                                          	{% if lista2 %}#}
+{#								{% for model in lista2 %}#}
+{#                                        <li>{{ model.name }}</li>#}
+{#                                          {% endfor %}#}
+{#				{% else %}#}
+{#					<p>No models</p>#}
+{#				{% endif %}#}
+{#                                      </ul>#}
+                                             <select id="recipientmodel" name="recipientmodel"  onchange="onChange()">
+                                            <option selected="true" style="display:none;">Select recipient</option>
+                                                {% if lista2 %}
+                                                {% for model in lista2 %}
+                                             <option id='{{ model.id }}' value="{{ model.model_file.url}}">{{ model.name }}</option>
+                                                {% endfor %}
+                                               {% else %}
+                                               <p>No models</p>
+                                                {% endif %}
+                                            </select>
+                                    </div>
+     <button onclick="window.myfunction2()">Magic Mode ON</button>
+        <button onclick="window.mynofunction2()">Magic Mode OFF</button>
+          <button onclick="window.rot2()">Rotation ON</button>
+          <button onclick="window.norot2()">Rotation OFF</button>
+{#        <button onclick="window.norender2()">Clear</button>#}
+        </div>
+
+    </div>
+
+
+
+<div  class="row" style="height: 100%;margin-bottom: 60px">
+<div class="col-xs-6" id="r" style="height: 100%">
+
+
+        <div  id="c1" style="background-color: #dde4e9; width: 100%; height: 100%; margin-bottom: 2px; margin-right: 2px; "></div>
+
+</div>
+
+    <div class="col-xs-6" style="height: 100%">
+
+             <div  id="c2" style="background-color: #dde4e9; width: 100%; height: 100%; margin-bottom: 2px;  "></div>
+
+</div>
+</div>
+
+
+
+
+
+
+
+{#     <script type="text/javascript" src="http://get.goXTK.com/xtk.js"></script>#}
+{#    <script type="text/javascript" src="http://get.goxtk.com/xtk_edge.js"></script>#}
+
+
+
+{#<script type="text/javascript" src="{% static "js/xtk.js"%}"></script>#}
+<script type="text/javascript" src="http://get.goXTK.com/xtk.js"></script>
+<script>
+
+
+window.onload = function() {
+
+
+    r1 = new X.renderer3D();
+
+                                      // .. attach the renderer to a <div> container using its id
+    r1.container = 'c1';
+    r1.init();
+    r2 = new X.renderer3D();
+
+                                      // .. attach the renderer to a <div> container using its id
+    r2.container = 'c2';
+    r2.init();
+
+                                var selectElement = document.getElementById("donormodel");
+                                selectElement.onchange=function(){
+                                    r1.destroy();
+                                    var val = selectElement.value;
+                                      mesh = new X.mesh();
+                                    mesh.file = "/static/"+val;
+                                    console.log(mesh.file);
+                                      // create and initialize three 3D renderers
+                                      r1 = new X.renderer3D();
+
+                                      // .. attach the renderer to a <div> container using its id
+                                      r1.container = 'c1';
+
+                                      r1.init();
+
+                                      r1.camera.position = [0, 500,0];
+                                      r1.camera.up = [0, 0, 1];
+
+                                      // create a new X.mesh and attach a .VTK file
+
+
+
+
+                                      // .. but add it to only to the first renderer
+                                      r1.add(mesh);
+
+                                      // the onShowtime function gets executed, once the renderer r1 completely
+                                      // loaded the .VTK file
+                                      r1.onShowtime = function() {
+
+
+
+                                        // trigger rendering
+
+
+                                      };
+
+                                      // start the loading of the .VTK file and display it on renderer r1.
+                                      // once the file was fully loaded, the r1.onShowtime function is executed
+                                      r1.render();
+
+                                };
+
+
+                 var selectElement2 = document.getElementById("recipientmodel");
+                                selectElement2.onchange=function(){
+                                    r2.destroy();
+                                    var val = selectElement2.value;
+                                      mesh2 = new X.mesh();
+                                    mesh2.file = "/static/"+val;
+                                    console.log(mesh2.file);
+                                      // create and initialize three 3D renderers
+                                      r2 = new X.renderer3D();
+
+                                      // .. attach the renderer to a <div> container using its id
+                                      r2.container = 'c2';
+
+                                      r2.init();
+
+                                      r2.camera.position = [0, 500,0];
+                                      r2.camera.up = [0, 0, 1];
+
+                                      // create a new X.mesh and attach a .VTK file
+
+
+
+
+                                      // .. but add it to only to the first renderer
+                                      r2.add(mesh2);
+
+                                      // the onShowtime function gets executed, once the renderer r1 completely
+                                      // loaded the .VTK file
+                                      r2.onShowtime = function() {
+
+
+
+                                        // trigger rendering
+
+
+                                      };
+
+                                      // start the loading of the .VTK file and display it on renderer r1.
+                                      // once the file was fully loaded, the r1.onShowtime function is executed
+                                      r2.render();
+
+                                };
+};
+
+
+
+    function myfunction(){
+        mesh.magicmode = true;
+
+    };
+    function mynofunction(){
+        mesh.magicmode = false;
+    };
+
+  function myfunction2(){
+        mesh2.magicmode = true;
+    };
+    function mynofunction2(){
+            mesh2.magicmode = false;
+            };
+    function rot(){
+        r1.onRender = function() {
+            r1.camera.rotate([3, 0]);
+        };
+    };
+    function rot2(){
+       r2.onRender = function() {
+            r2.camera.rotate([3, 0]);
+        };
+    };
+    function norot(){
+      r1.onRender = function() {
+            r1.camera.rotate([0, 0]);
+        };
+    };
+function norot2(){
+     r2.onRender = function() {
+            r2.camera.rotate([0, 0]);
+        };
+    };
+{#    function norender(){#}
+{#      r1.destroy();#}
+{##}
+{#    };#}
+{#    function norender2(){#}
+{#        r2.destroy();#}
+{#    };#}
+</script>
+
+{% endblock %}

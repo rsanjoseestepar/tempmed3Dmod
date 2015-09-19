@@ -322,3 +322,36 @@ def comp(request):
 		else:
 			return HttpResponse('Sign in first')
 
+def comptwo(request):
+		if request.user.is_authenticated():
+			user = get_user(request)
+			lista = ImgContainer.objects.filter(user_id=user.pk).filter(active=True).order_by('id')
+			lista2 = Model.objects.filter(user_id=user.pk).filter(active=True).order_by('id')
+			c1 = {'lista' : lista}
+			c2 = {'lista2' : lista2}
+
+			context = {}
+			context.update(c1)
+			context.update(c2)
+
+			return render(request, 'main/comptwo.html', context)
+
+		else:
+			return HttpResponse('Sign in first')
+
+def compfour(request):
+		if request.user.is_authenticated():
+			user = get_user(request)
+			lista = ImgContainer.objects.filter(user_id=user.pk).filter(active=True).order_by('id')
+			lista2 = Model.objects.filter(user_id=user.pk).filter(active=True).order_by('id')
+			c1 = {'lista' : lista}
+			c2 = {'lista2' : lista2}
+
+			context = {}
+			context.update(c1)
+			context.update(c2)
+
+			return render(request, 'main/compfour.html', context)
+
+		else:
+			return HttpResponse('Sign in first')

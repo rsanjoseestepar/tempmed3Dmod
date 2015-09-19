@@ -5,7 +5,7 @@
 
     <style>
             html, body {
-          background-color: rgb(0, 0, 0);
+          background-color: rgb(255, 255, 255);
                 margin: 5px;
           padding: 10px;
           height: 100%;
@@ -21,39 +21,197 @@
 
 
 
-{#  fixme contenedores fijos. aprovechan mejor la superficie del canvas#}
-<!-- the container for the renderers -->
-<div id="gui"  style="background-color: #000; width: 20%; height: 50%; margin-bottom: 2px; float:right  "></div>
-<div  id="3d"
-  style="background-color: #000; width: 80%; height: 60%; margin-bottom: 2px;  "></div>
-{#    <div class="movegui"></div>#}
-
-
-
-    <div id="sliceX"
-  style="border-top: 4px solid red; background-color: #000; width: 33%; height: 40%; float: left;"></div>
-<div id="sliceY"
-  style="border-top: 4px solid green;background-color: #000; width: 33%; height: 40%; float: left;"></div>
-<div id="sliceZ"
-  style="border-top: 4px solid blue; background-color: #000; width: 33%; height: 40%; float: left;"></div>
+<button onclick="window.myfunction()">Magic Mode ON</button>
 
 
 {#     <script type="text/javascript" src="http://get.goXTK.com/xtk.js"></script>#}
 {#    <script type="text/javascript" src="http://get.goxtk.com/xtk_edge.js"></script>#}
-    <script type="text/javascript" src="http://get.goxtk.com/xtk_xdat.gui.js"></script>
-{#   <script type="text/javascript" src="http://get.goXTK.com/xtk.js"></script>#}
 
-<script type="text/javascript"  src="{% static "js/xtk/X/lib/google-closure-library/closure/goog/base.js"%}"></script>
-<script type="text/javascript"  src="{% static "js/xtk/X/xtk-deps.js"%}"></script>
-{#<script type="text/javascript" src="{% static "js/xtk/X/X.js"%}"></script>#}
-    <script type="text/javascript">
+    <div  id="r4" style="background-color: #D7D7D7; width: 99%; height: 60%; margin-bottom: 2px;  "></div>
+    <div id="r1" style=" background-color: #D7D7D7; width: 33%; height: 40%; float: left;"></div>
+<div id="r2" style="background-color: #D7D7D7; width: 33%; height: 40%; float: left;"></div>
+<div id="r3" style=" background-color: #D7D7D7; width: 33%; height: 40%; float: left;"></div>
 
-    goog.require("X.renderer3D");
-    goog.require("X.renderer2D");
-    goog.require("X.volume");
- </script>
+{#<script type="text/javascript" src="{% static "js/xtk.js"%}"></script>#}
+<script type="text/javascript" src="http://get.goXTK.com/xtk.js"></script>
+<script>
 
 
+
+
+    function ModelViewer(container) {
+          this.r1 = new X.renderer3D();
+          this.r1.container = container;
+          this.r1.init();
+          //this.r1.camera.position = [0, 0, -500];
+        //this.r1.camera.up = [0, 1, 0];
+    }
+
+    function FourViewsCoordinatedViewer(container_array) {
+
+        this.container_labels = container_array;
+        console.log(this.container_labels.length);
+        this.v = [new ModelViewer(container_array[0]),new ModelViewer(container_array[1]),new ModelViewer(container_array[2]),new ModelViewer(container_array[3])]
+        //this.v1 = new ModelViewer(container_array[0]);
+        //this.v2 = new ModelViewer(container_array[1]);
+        //this.v3 = new ModelViewer(container_arrary[2]);
+        //this.v4 = new ModelViewer(container_array[3]);
+
+        //Set up cameras in the cordinatedviewer
+        this.v[0].r1.camera.position = [0, 0, -500];
+        this.v[0].r1.camera.up = [0, 1, 0];
+        this.v[1].r1.camera.position = [500, 0, 0];
+        this.v[1].r1.camera.up = [0, 1, 0];
+        this.v[2].r1.camera.position = [0, 500, 0];
+        this.v[3].r1.camera.position = [0, 500, 0];
+
+        this.add_mesh_secondary_viewers = function(mesh_object) {
+           for (i=1; i< this.container_labels.length; i++) {
+
+                console.log('Adding mesh');
+                this.v[i].r1.add(mesh_object);
+           }
+        };
+
+        this.render_secondary_viewers = function() {
+           for (i=1; i< this.container_labels.length; i++) {
+                this.v[i].r1.render();
+           }
+        };
+
+        };
+
+
+
+  var mesh = new X.mesh();
+
+
+    window.onload = function() {
+
+
+        containers_labels = ['r1','r2','r3', 'r4'];
+
+
+    var FV = new FourViewsCoordinatedViewer(containers_labels);
+
+
+        mesh.file = "{% static 'lung.stl' %}";
+
+  // .. but add it to only to the first renderer
+  FV.v[0].r1.add(mesh);
+
+  // the onShowtime function gets executed, once the renderer r1 completely
+  // loaded the .VTK file
+  FV.v[0].r1.onShowtime = function() {
+
+    // since the mesh was loaded, we add it now to the other renderers
+    // this way, the .VTK file is loaded only once
+
+    FV.add_mesh_secondary_viewers(mesh);
+
+      FV.v[2].r1.onRender = function() {
+                FV.v[2].r1.camera.rotate([2,0]);
+      }
+
+    // trigger rendering
+    FV.render_secondary_viewers();
+
+  };
+
+        FV.v[0].r1.render();
+
+    };
+
+
+
+{#var r1 = new X.renderer3D();#}
+{#var r2 = new X.renderer3D();#}
+{#var r3 = new X.renderer3D();#}
+{##}
+{#var mesh = new X.mesh();#}
+{##}
+{#window.onload = function() {#}
+{##}
+{#  // create and initialize three 3D renderers#}
+{#  // .. attach the renderer to a <div> container using its id#}
+{#  r1.container = 'r1';#}
+{##}
+{#  r1.init();#}
+{#  r1.camera.position = [0, 0, -500];#}
+{#  r1.camera.up = [0, 1, 0];#}
+{##}
+{#  // .. attach the renderer to a <div> container using its id#}
+{#  r2.container = 'r2';#}
+{#  r2.init();#}
+{#  // .. change the view of this renderer#}
+{#  r2.camera.position = [500, 0, 0];#}
+{#  r2.camera.up = [0, 1, 0];#}
+{##}
+{#  r3.container = 'r3';#}
+{#  r3.init();#}
+{#  // .. and change the view for this one as well#}
+{#  r3.camera.position = [0, 500, 0];#}
+{##}
+{#	var r4 = new X.renderer3D();#}
+{#  r4.container = 'r4';#}
+{##}
+{#  r4.init();#}
+{#  // .. and change the view for this one as well#}
+{#  r4.camera.position = [0, 500, 0];#}
+{##}
+{##}
+{#  // create a new X.mesh and attach a .VTK file#}
+{#	//mesh.file = "{% static model.model_file.url %}";#}
+{##}
+{##}
+{# // window.alert(mesh.file);#}
+{##}
+{#   mesh.file = "{% static 'lung.stl' %}";#}
+{##}
+{#  // .. but add it to only to the first renderer#}
+{#  r1.add(mesh);#}
+{##}
+{#  // the onShowtime function gets executed, once the renderer r1 completely#}
+{#  // loaded the .VTK file#}
+{#  r1.onShowtime = function() {#}
+{##}
+{#    // since the mesh was loaded, we add it now to the other renderers#}
+{#    // this way, the .VTK file is loaded only once#}
+{#    r2.add(mesh);#}
+{#    r3.add(mesh);#}
+{##}
+{#    r4.add(mesh);#}
+{##}
+{##}
+{#	r3.onRender = function() {#}
+{#     	r3.camera.rotate([2,0]);#}
+{#    };#}
+{#    // trigger rendering#}
+{#    r2.render();#}
+{#    r3.render();#}
+{#    r4.render();#}
+{##}
+{##}
+{#  };#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#  // start the loading of the .VTK file and display it on renderer r1.#}
+{#  // once the file was fully loaded, the r1.onShowtime function is executed#}
+{#  r1.render();#}
+{##}
+{##}
+{#};#}
+
+
+    function myfunction(){
+        mesh.magicmode = true;
+    };
+
+
+</script>
 
 
 
