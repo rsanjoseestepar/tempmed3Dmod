@@ -355,3 +355,4 @@ def compfour(request):
 
 		else:
 			return HttpResponse('Sign in first')
+

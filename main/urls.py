@@ -38,4 +38,5 @@ urlpatterns = [
 	url(r'^comp/$', views.comp , name='comp'),
 	url(r'^comptwo/$', views.comptwo , name='comptwo'),
 	url(r'^compfour/$', views.compfour , name='compfour'),
+
 ]
