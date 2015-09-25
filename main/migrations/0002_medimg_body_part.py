@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('main', '0002_roi'),
+        ('main', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='imgcontainer',
-            name='name',
-            field=models.CharField(default=None, max_length=100),
+            model_name='medimg',
+            name='body_part',
+            field=models.ManyToManyField(to='main.BodyPart'),
         ),
     ]

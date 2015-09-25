@@ -78,7 +78,7 @@ def upload_model(request):
 			form = UploadModelForm(request.POST, request.FILES)
 			if form.is_valid():
 				model.model_file = form.cleaned_data['model']
-
+				model.name = form.cleaned_data['name']
 				model.user = context
 				model.save()
 				return render(request,'main/navigation.html')
@@ -98,7 +98,7 @@ def upload_form(request):
 			# form = ImgOptions(request.POST)
 			# form.imgOptions = imgOptions
 			imgOptions = request.POST.get("imgOptions")
-			if imgOptions == "model":
+			if imgOptions == "modelo":
 				model = Model()
 				form = UploadModelForm(request.POST, request.FILES)
 				if form.is_valid():

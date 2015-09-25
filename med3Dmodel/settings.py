@@ -80,10 +80,23 @@ WSGI_APPLICATION = 'med3Dmodel.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'testdb2',
+        'USER': 'ruben',
+        'PASSWORD': '21va5112n',
+        'HOST': 'testdb2.clzvrniyjzgk.us-east-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -110,7 +123,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'media')]
 
-MEDIA_ROOT =  os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # CELERY STUFF

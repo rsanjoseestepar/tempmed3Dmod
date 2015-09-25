@@ -12,23 +12,23 @@ class Organ(models.Model):
     organ = models.CharField(max_length=20)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
-    def __unicode__(self):
+    def __str__(self):
         return self
 
 class BodyPart(models.Model):
     body_part = models.CharField(max_length=20)
-    organ = models.ManyToManyField(Organ)
-    def __unicode__(self):
+    #organ = models.ManyToManyField(Organ)
+    def __str__(self):
         return self
 
 class ImgContainer(models.Model):
     user = models.ForeignKey(User)
-    tentative_body_part = models.ManyToManyField(BodyPart, default='0')
-    tentative_img_type = models.CharField(max_length=10, default='0')
+    name = models.CharField(max_length=100)
+    #tentative_body_part = models.ManyToManyField(BodyPart, default=None, null=True)
+    #tentative_img_type = models.CharField(max_length=10, default=None, null=True)
     active = models.BooleanField(default = True)
     created = models.DateTimeField(auto_now_add=True)
     deleted = models.DateTimeField(auto_now=True)
-    name = models.CharField(max_length=100)
     file = models.FileField(upload_to = upload_to, default = 'no_file')
     def __str__(self):
         return self
@@ -46,7 +46,7 @@ class MedImg(models.Model):
     active = models.BooleanField(default = True)
     created = models.DateTimeField(auto_now_add=True)
     deleted = models.DateTimeField(auto_now=True)
-    def __unicode__(self):
+    def __str__(self):
         return self
     def get_upload_path(self,filename):
         return str(self.user.id) + "/medimg/" + str(self.img_type) + filename
@@ -55,8 +55,8 @@ class MedImg(models.Model):
 
 class Model(models.Model):
     user = models.ForeignKey(User)
-    medimg = models.ForeignKey(MedImg, default='0')
-    organ = models.ForeignKey(Organ, default='0')
+    medimg = models.ForeignKey(MedImg, null=True)
+    organ = models.ForeignKey(Organ, null=True)
     name = models.CharField(max_length=100)
     model_file = models.FileField(upload_to = upload_to, default = 'None/no_file')
     active = models.BooleanField(default = True)
