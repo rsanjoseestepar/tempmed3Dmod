@@ -30,7 +30,7 @@ urlpatterns = [
 
     url(r'^main/', include('main.urls')),
     url(r'^task/', include('task.urls')),
-    # url(r'^worker/', include('worker.urls')),
+    url(r'^worker/', include('worker.urls')),
     url(r'^$', views.home),
     url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
