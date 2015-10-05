@@ -6,7 +6,7 @@ def worker(request):
     if request.method == 'GET':
         time.sleep(5)
         print "slept and deleted"
-        print id
+        print request.GET.get('id')
         return HttpResponse("Done")
     else:
         return HttpResponseForbidden
