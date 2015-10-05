@@ -223,8 +223,10 @@ def generate(request,id):
 	#response = urllib2.urlopen(req)
 	#html = response.read()
 	#print html
+	values = {'id' : id }
+	data = urllib.urlencode(values)
 	w = SendWorker()
-	w.run('/worker')
+	w.run('/worker'+"?"+data)
 
 	print "I'm asynchronous!"
 	# do something
