@@ -11,19 +11,20 @@ def worker(request):
         print "slept and deleted"
         id = request.GET.get('id')
         user = request.GET.get('user')
+        userid = request.GET.get('userid')
         print id + user
-        delete_model(id,user)
+        delete_model(id,user,userid)
         return HttpResponse("Done deleting")
     else:
         return HttpResponseForbidden
 
 
-def delete_model(id,user):
+def delete_model(id,user,userid):
 
         a = Model.objects.get(pk=id)
         print a.user_id
-        print user.id
-        if (a.user_id == user.id):
+        print userid
+        if (a.user_id == userid):
             a.active = False
             a.save()
             return
