@@ -225,7 +225,7 @@ def generate(request,id):
 	#print html
 	if request.user.is_authenticated():
 		user=get_user(request)
-		values = {'id' : id, 'user' : user.id }
+		values = {'id' : id, 'user' : int(user.id) }
 		data = urllib.urlencode(values)
 		w = SendWorker()
 		w.run('/worker/'+ "?" + data)
