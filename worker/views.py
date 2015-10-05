@@ -10,7 +10,7 @@ def worker(request):
         time.sleep(5)
         print "slept and deleted"
         id = request.GET.get('id')
-        user = request.GET.get('user')
+        user = int(request.GET.get('user'))
         print id + user
         delete_model(id,user)
         return HttpResponse("Done deleting")
