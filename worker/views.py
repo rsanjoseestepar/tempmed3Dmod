@@ -23,6 +23,7 @@ def delete_model(id,user):
         a = ImgContainer.objects.get(pk=id)
         print a.user_id
         print user
+        user = int(user)
         print type(a.user_id)
         print type(user)
         if (a.user_id == user):
