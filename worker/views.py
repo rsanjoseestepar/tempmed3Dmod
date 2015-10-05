@@ -25,8 +25,8 @@ def delete_model(id,user):
         print user
         # print "b" + a.user_id + "b"
         # print "b" + user + "b"
-        # print type(a.user_id)
-        # print type(user)
+        print type(a.user_id)
+        print type(user)
         if (a.user_id == user):
             a.active = False
             a.save()
