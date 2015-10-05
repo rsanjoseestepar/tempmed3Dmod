@@ -196,6 +196,7 @@ def deletemodel(request,id):
 			return HttpResponse('File not found')
 
 import urllib2
+import urllib
 import threading
 
 class MyHandler(urllib2.HTTPHandler):
@@ -208,13 +209,12 @@ class MyHandler(urllib2.HTTPHandler):
 
 
 class SendWorker():
-	def __init__(self,id):
+	def __init__(self):
 		self.worker_url='http://127.0.0.1:9000/worker'
 		self.urlcall= urllib2.build_opener(MyHandler())
-		self.id = id
 
 	def run(self,rest_query):
-		t = threading.Thread(target=self.urlcall.open, args=(self.worker_url+rest_query,self.id))
+		t = threading.Thread(target=self.urlcall.open, args=(self.worker_url+rest_query,))
 		t.start()
 
 
@@ -223,7 +223,7 @@ def generate(request,id):
 	#response = urllib2.urlopen(req)
 	#html = response.read()
 	#print html
-	w = SendWorker(id)
+	w = SendWorker()
 	w.run('/worker')
 
 	print "I'm asynchronous!"
