@@ -11,8 +11,9 @@ def worker(request):
         print "slept and deleted"
         id = request.GET.get('id')
         user = request.GET.get('user')
-        print id + user
-        delete_model(id,user)
+        us = int(user)
+        print id + us
+        delete_model(id,us)
         return HttpResponse("Done deleting")
     else:
         return HttpResponseForbidden
