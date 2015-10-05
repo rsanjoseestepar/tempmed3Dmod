@@ -228,7 +228,7 @@ def generate(request,id):
 		values = {'id' : id, 'user' : user }
 		data = urllib.urlencode(values)
 		w = SendWorker()
-		w.run('/worker'+"?" + data)
+		w.run('/worker/'+ "?" + data)
 
 		print "I'm asynchronous!"
 		# do something

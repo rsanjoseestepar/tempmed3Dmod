@@ -23,3 +23,4 @@ def delete_model(id,user):
         if (a.user_id == user.id):
             a.active = False
             a.save()
+            return
