@@ -223,15 +223,17 @@ def generate(request,id):
 	#response = urllib2.urlopen(req)
 	#html = response.read()
 	#print html
-	values = {'id' : id }
-	data = urllib.urlencode(values)
-	w = SendWorker()
-	w.run('/worker'+"?"+data)
+	if request.user.is_authenticated():
+		user=get_user(request)
+		values = {'id' : id, 'user' : user }
+		data = urllib.urlencode(values)
+		w = SendWorker()
+		w.run('/worker'+"?" + data)
 
-	print "I'm asynchronous!"
-	# do something
-	  # best practice to close the file
-	return render(request,'main/files.html')
+		print "I'm asynchronous!"
+		# do something
+		  # best practice to close the file
+		return render(request,'main/files.html')
 
 def browser(request,id):
 	return render(request,'main/browser.html')

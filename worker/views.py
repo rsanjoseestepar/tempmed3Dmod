@@ -5,16 +5,16 @@ from main.models import *
 from django.contrib.auth import *
 # Create your views here.
 def worker(request):
-    if request.user.is_authenticated():
-        user=get_user(request)
-        if request.method == 'GET':
-            time.sleep(5)
-            print "slept and deleted"
-            id = request.GET.get('id')
-            delete_model(id, user)
-            return HttpResponse("Done deleting")
-        else:
-            return HttpResponseForbidden
+
+    if request.method == 'GET':
+        time.sleep(5)
+        print "slept and deleted"
+        id = request.GET.get('id')
+        user = request.GET.get('user')
+        delete_model(id,user)
+        return HttpResponse("Done deleting")
+    else:
+        return HttpResponseForbidden
 
 
 def delete_model(id,user):
