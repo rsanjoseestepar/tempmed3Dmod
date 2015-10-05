@@ -22,7 +22,12 @@ def delete_model(id,user):
 
         a = ImgContainer.objects.get(pk=id)
         print a.user_id
-        # if (a.user_id == user):
-        a.active = False
-        a.save()
-        return
+        print user
+        print "a"+a.user_id+"a"
+        print "a"+user+"a"
+        print type(a.user_id)
+        print type(user)
+        if (a.user_id == user):
+            a.active = False
+            a.save()
+            return
