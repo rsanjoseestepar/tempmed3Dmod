@@ -21,6 +21,8 @@ def worker(request):
 def delete_model(id,user):
 
         a = Model.objects.get(pk=id)
+        print a.user_id
+        print user.id
         if (a.user_id == user.id):
             a.active = False
             a.save()
