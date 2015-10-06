@@ -46,6 +46,10 @@ def worker(request):
 
             # subprocess.call(['./test.sh'])
             return
+        return HttpResponse("Done")
+
+    else:
+        return HttpResponseForbidden
 
 # def script():
 #     caseLists = `ls -1 *BWH.nrrd | cut -d "_labelmap.nrrd" -f1`
