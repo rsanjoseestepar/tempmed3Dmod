@@ -44,7 +44,7 @@ def worker(request):
         user = int(user)
         if (a.user_id == user):
             print "workeando"
-            # subprocess.call(['./test.sh'])
+            subprocess.call(['./test.sh'])
 
         return HttpResponse("Done")
 
