@@ -43,7 +43,7 @@ def worker(request):
         print file
         user = int(user)
         if (a.user_id == user):
-
+            print "ola q ase"
             # subprocess.call(['./test.sh'])
             return
         return HttpResponse("Done")
