@@ -4,6 +4,10 @@ import time, urllib, urllib2
 from main.models import *
 from django.contrib.auth import *
 import os, subprocess
+from med3Dmodel import settings
+
+import tempfile
+
 # Create your views here.
 # def worker(request):
 #
@@ -44,12 +48,68 @@ def worker(request):
         user = int(user)
         if (a.user_id == user):
             print "workeando"
-            # subprocess.call(['./test.sh'])
+            ee = ExecutionEngine()
+
+            #Get path to input files
+            labelmap_file = os.path.join(MEDIA_ROOT,a.file)
+            print " File to process " + labelmap_file
+
+            #Generate temporary file output
+            output_file = os.path.join(ee.tmp_dir,os.path.basename(a.file),"-model.vtk")
+
+            ee.GenerateModel(labelmap_file,model_file)
+
+            #Update Model with output result and move result to permanent location
 
         return HttpResponse("Done")
 
     else:
         return HttpResponseForbidden
+
+
+
+class ExecutionEngine():
+
+    def __init__(self):
+        self.slicer_path=os.environ('SLICER_PATH')
+        self.slicer_path="/Applications/Slicer.app/Contents/lib/Slicer-4.4/cli-modules/"
+        self.unu_path=os.environ('UNU_PATH')
+
+        self.tmp_dir=tempfile.mkdtemp()
+
+        self.debug = True
+
+
+    def GenerateModel(self,labelmap_file,output_model):
+
+
+        tmp_cmd = "%(path)/unu 2op gte $(in_file)s 1 -o $(tmp_file)s"
+
+        out1 = os.path.join(self.tmp_dir,'tmp.nrrd')
+        tmp_cmd = tmp_cmd % {'path':self.unu_path,'in_file':labelmap_file,'tmp_file':out1}
+
+        self.run(tmp_cmd)
+
+        tmp_cmd = "%(path)s/ModelMaker %(in_file)s -l 1 -n %(out_file)s"
+
+        tmp_cmd = tmp_cmd % {'path':self.slicer_path,'in_file':out1,'out_file':output_model}
+
+        self.run(tmp_cmd)
+
+        #Delete tmp files
+        shutil.rm(out1)
+
+
+    def run(self,tmp_cmd):
+
+        if self.debug==True:
+            print tmp_cmd
+        else:
+            res=subprocess.call(tmp_cmd, shell=True )
+            if res == False:
+                return False
+        return True
+
 
 # def script():
 #     caseLists = `ls -1 *BWH.nrrd | cut -d "_labelmap.nrrd" -f1`
