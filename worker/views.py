@@ -4,7 +4,7 @@ import time, urllib, urllib2
 from main.models import *
 from django.contrib.auth import *
 import os, subprocess
-from med3Dmodel import settings
+from med3Dmodel.settings import MEDIA_ROOT
 
 import tempfile
 
@@ -36,54 +36,23 @@ import tempfile
 #             a.save()
 #             return
 
-
-
-def worker(request):
-    if request.method == 'GET':
-        id = request.GET.get('id')
-        user = request.GET.get('user')
-        a = ImgContainer.objects.get(pk=id)
-        file = a.file
-        print file
-        user = int(user)
-        if (a.user_id == user):
-            print "workeando"
-            ee = ExecutionEngine()
-
-            #Get path to input files
-            labelmap_file = os.path.join(MEDIA_ROOT,a.file)
-            print " File to process " + labelmap_file
-
-            #Generate temporary file output
-            output_file = os.path.join(ee.tmp_dir,os.path.basename(a.file),"-model.vtk")
-
-            ee.GenerateModel(labelmap_file,model_file)
-
-            #Update Model with output result and move result to permanent location
-
-        return HttpResponse("Done")
-
-    else:
-        return HttpResponseForbidden
-
-
-
 class ExecutionEngine():
 
     def __init__(self):
-        self.slicer_path=os.environ('SLICER_PATH')
+        #self.slicer_path=os.environ('SLICER_PATH')
         self.slicer_path="/Applications/Slicer.app/Contents/lib/Slicer-4.4/cli-modules/"
-        self.unu_path=os.environ('UNU_PATH')
-
+        #self.unu_path=os.environ('UNU_PATH')
+        self.unu_path="/Users/rubensanjose/src/ChestImagingPlatform-build/teem-build/bin"
         self.tmp_dir=tempfile.mkdtemp()
 
-        self.debug = True
+        self.debug = False
 
 
     def GenerateModel(self,labelmap_file,output_model):
 
 
-        tmp_cmd = "%(path)/unu 2op gte $(in_file)s 1 -o $(tmp_file)s"
+        print "Here"
+        tmp_cmd = "%(path)s/unu 2op gte %(in_file)s 1 -o %(tmp_file)s"
 
         out1 = os.path.join(self.tmp_dir,'tmp.nrrd')
         tmp_cmd = tmp_cmd % {'path':self.unu_path,'in_file':labelmap_file,'tmp_file':out1}
@@ -102,13 +71,49 @@ class ExecutionEngine():
 
     def run(self,tmp_cmd):
 
-        if self.debug==True:
+        if self.debug == True:
             print tmp_cmd
         else:
+            print tmp_cmd
             res=subprocess.call(tmp_cmd, shell=True )
             if res == False:
                 return False
         return True
+
+def worker(request):
+    if request.method == 'GET':
+        id = request.GET.get('id')
+        user = request.GET.get('user')
+        a = ImgContainer.objects.get(pk=id)
+        file = a.file
+        print file
+        user = int(user)
+        if (a.user_id == user):
+            print "workeando"
+            ee = ExecutionEngine()
+            print type(file)
+            filestr = str(file)
+            #Get path to input files
+            labelmap_file = os.path.join(MEDIA_ROOT, filestr )
+            print " File to process " + labelmap_file
+
+            #Generate temporary file output
+            output_file = os.path.join(ee.tmp_dir,os.path.basename(filestr)+"-model.vtk")
+            print output_file
+            print "Ready to call"
+            print ee.slicer_path
+            ee.GenerateModel(labelmap_file,output_file)
+
+            #Update Model with output result and move result to permanent location
+
+        return HttpResponse("Done")
+
+    else:
+        return HttpResponseForbidden
+
+
+
+
 
 
 # def script():

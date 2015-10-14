@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'med3Dmodel.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'testdb2',
+        'NAME': 'test',
         'USER': 'ruben',
         'PASSWORD': '21va5112n',
-        'HOST': 'testdb2.clzvrniyjzgk.us-east-1.rds.amazonaws.com',
+        'HOST': 'test.clzvrniyjzgk.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
