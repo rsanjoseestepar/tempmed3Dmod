@@ -15,6 +15,9 @@ class Organ(models.Model):
     def __str__(self):
         return self
 
+    def __repr__(self):
+        return 'Organ ID: ' + str(self.organ)
+
 class BodyPart(models.Model):
     body_part = models.CharField(max_length=20)
     #organ = models.ManyToManyField(Organ)
@@ -66,6 +69,9 @@ class Model(models.Model):
         return self
     def get_upload_path(self,filename):
         return str(self.user.id) + "/model/" + filename
+
+    def __repr__(self):
+        return 'Mesh ID: ' + str(self.name)
 
 
 class Roi(models.Model):

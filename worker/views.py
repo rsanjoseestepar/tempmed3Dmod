@@ -2,9 +2,14 @@ from django.shortcuts import render
 from django.http import *
 import time, urllib, urllib2
 from main.models import *
+from main.forms import *
 from django.contrib.auth import *
 import os, subprocess
-from med3Dmodel.settings import MEDIA_ROOT
+from med3Dmodel.settings import MEDIA_ROOT, AWS_STORAGE_BUCKET_NAME
+from django.contrib.auth.models import User
+from django.db.models import FileField
+from django.core.files import File
+from django.core.files.storage import default_storage
 
 import tempfile
 
@@ -66,8 +71,9 @@ class ExecutionEngine():
         self.run(tmp_cmd)
 
         #Delete tmp files
-        shutil.rm(out1)
-
+        # shutil.rm(out1)
+        print "mojo" + output_model
+        return output_model
 
     def run(self,tmp_cmd):
 
@@ -77,41 +83,80 @@ class ExecutionEngine():
             print tmp_cmd
             res=subprocess.call(tmp_cmd, shell=True )
             if res == False:
+                print "Falso"
                 return False
         return True
+
+    def file_manager(self, object):
+        tmp_dir = tempfile.mkdtemp()
+        file_path = object.file.url
+        return file_path
+
+    def erase_file_manager(self,tmp_dir):
+        shutil.rmtree(tmp_dir)
+        return
 
 def worker(request):
     if request.method == 'GET':
         id = request.GET.get('id')
         user = request.GET.get('user')
+        id = int(id)
+        user = int(user)
         a = ImgContainer.objects.get(pk=id)
+
+        user_object = User.objects.get(pk=user)
+        name = a.name
         file = a.file
         print file
-        user = int(user)
+
         if (a.user_id == user):
             print "workeando"
             ee = ExecutionEngine()
             print type(file)
             filestr = str(file)
             #Get path to input files
+            print default_storage
             labelmap_file = os.path.join(MEDIA_ROOT, filestr )
             print " File to process " + labelmap_file
 
             #Generate temporary file output
-            output_file = os.path.join(ee.tmp_dir,os.path.basename(filestr)+"-model.vtk")
+            output_file = os.path.join(ee.tmp_dir,os.path.basename(filestr)+"-model")
             print output_file
             print "Ready to call"
             print ee.slicer_path
             ee.GenerateModel(labelmap_file,output_file)
 
             #Update Model with output result and move result to permanent location
+            # model = Model()
+            #
+            # f = open(output_file+'.vtk')
+            #
+            # ff = FileField()
+            # ff.save("ProcessedModel",File(f))
+            #
+            # model.model_file = ff
+            # model.user=user
+            # model.name="Nuevo Modelo"
+            #
+            # model.save()
+
+            model = Model()
+            vtkfile = output_file + '.vtk'
+            model.name = "Modelo del worker"
+            model.user = user_object
+
+            with open(vtkfile , 'rb') as doc_file:
+                tt = File(doc_file)
+                print "Hi"
+                model.model_file.save('filename', File(doc_file), save=True)
+
+            model.save()
+
 
         return HttpResponse("Done")
 
     else:
         return HttpResponseForbidden
-
-
 
 
 

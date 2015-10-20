@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'main',
     'task',
     'worker',
+    'storages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -125,7 +126,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'media')]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+s3 = True
 
+if s3 == True:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    AWS_ACCESS_KEY_ID = 'AKIAJH2CWG6AXGZCOQQQ'
+    AWS_SECRET_ACCESS_KEY =  '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'
+    AWS_STORAGE_BUCKET_NAME = 'elasticbeanstalk-us-east-1-500618432084'
+    AWS_QUERYSTRING_AUTH = False
 
 # CELERY STUFF
 BROKER_URL = 'redis://localhost:6379'

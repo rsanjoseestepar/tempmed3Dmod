@@ -11,7 +11,10 @@ from med3Dmodel.tasks import *
 import urllib2
 import urllib
 # Create your views here.
+from django.db.models import FileField
+from django.core.files import File
 
+from django.db.models.fields.files import FieldFile
 
 def home(request):
 	return render(request,'home.html')
@@ -328,3 +331,20 @@ def comp(request):
 		else:
 			return HttpResponse('Sign in first')
 
+def kk(request):
+	user = get_user(request)
+	model = Model()
+	model.user = user
+	with open('/Users/rubensanjose/archivo', 'rb') as doc_file:
+		model.model_file.save('filename', File(doc_file), save=True)
+
+	model.name = "Modelazo"
+	model.save()
+	return HttpResponse('ola k ase')
+
+	# f = open('/Users/rubensanjose/archivo')
+	# model.model_file._file = f
+	# model.user = user
+	# model.name = "Nuevo Modelo"
+	# model.save()
+	# return HttpResponse('ola k ase')

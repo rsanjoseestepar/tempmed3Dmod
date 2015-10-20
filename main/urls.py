@@ -36,5 +36,5 @@ urlpatterns = [
 	url(r'^order/$', views.order, name='order'),
 	url(r'^roi/$', views.roi , name='roi'),
 	url(r'^comp/$', views.comp , name='comp'),
-
+	url(r'^kk/$', views.kk , name='kk'),
 ]
